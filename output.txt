@@ -17,3 +17,6 @@ caramel lat
 caramel latte
 american
 americano
+chai
+chai lat
+chai latte

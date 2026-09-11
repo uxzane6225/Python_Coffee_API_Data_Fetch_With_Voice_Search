@@ -1,7 +1,12 @@
 import requests
 import speech_recognition as sr
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-base_url = "https://api.sampleapis.com/coffee/hot"
+base_url = os.getenv('BASE_URL')
+print(base_url)
+
 r = sr.Recognizer()
 
 def get_coffee(name):
