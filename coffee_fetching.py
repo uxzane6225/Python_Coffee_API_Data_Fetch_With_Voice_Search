@@ -5,14 +5,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 base_url = os.getenv('BASE_URL')
-print(base_url)
 
 r = sr.Recognizer()
 
 def get_coffee(name):
     url = f"{base_url}?title={name}"
     response = requests.get(url)
-    print(response)
+    # print(response)
     return response
 
 def handle_response(response):
@@ -73,6 +72,7 @@ run = True
 while run:
     try:
         see = input("Look at the menu? (y/n): ")
+
         if see == "y" or see == "Y":
             response = look_menu()
             data = handle_response(response)
@@ -93,18 +93,28 @@ while run:
         inputType = input("Type or voice? (t/v): ")
         coffee = ""
         isInputting = True
+        isValid = False
+
         while isInputting:
             if inputType == "t" or inputType == "T":
                 coffee = input("Enter a Coffee: ")
-                isInputting = False
             elif inputType == "v" or inputType == "V":
                 coffee = getCoffee()
-                isInputting = False
             else:
                 print("again")
-        print("After inputting: " + coffee)
-        response = get_coffee(coffee)
-        data = handle_response(response)
+
+            print("After inputting: " + coffee)
+            response = get_coffee(coffee)
+            data = handle_response(response)
+            if data:
+                isInputting = False
+            elif coffee == "Exit":
+                print("exiting...")
+                isInputting = False
+                run = False
+            else:
+                print(f"{coffee} is not a valid product! Try again.")
+
         # print(data)
         if data:
             print(f"ID: {data[0]['id']}")
@@ -114,8 +124,6 @@ while run:
             print("Ingredients: ")
             for ingredient in data[0]['ingredients']:
                 print(f"- {ingredient}")
-        else:
-            raise Exception("Coffee not found!")
         run = False
     except ConnectionError:
         print("No connection was made")
