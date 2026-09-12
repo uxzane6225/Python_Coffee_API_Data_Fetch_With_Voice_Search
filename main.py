@@ -26,7 +26,6 @@ def main():
             inputType = input("Type or voice? (t/v): ")
             coffee = ""
             isInputting = True
-            isValid = False
 
             while isInputting:
                 if inputType == "t" or inputType == "T":
@@ -58,6 +57,7 @@ def main():
                 print("Ingredients: ")
                 for ingredient in data[0]['ingredients']:
                     print(f"- {ingredient}")
+
             run = False
         except ConnectionError:
             print("No connection was made")
