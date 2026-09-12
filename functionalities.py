@@ -1,11 +1,12 @@
 import requests
-import speech_recognition as sr
 from dotenv import load_dotenv
+import speech_funky as sf
+
 load_dotenv()
 
 import os
 base_url = os.getenv('BASE_URL')
-r = sr.Recognizer()
+
 
 def get_coffee(name):
     url = f"{base_url}?title={name}"
@@ -24,46 +25,30 @@ def look_menu():
     response = requests.get(url)
     return response
 
+def get_input():
+    inputType = input("Type or voice? (t/v): ")
+    coffee = ""
+    isInputting = True
 
-def getCoffee():
-    isGettingCoffee = True
-    while isGettingCoffee:
-        try:
-            with sr.Microphone() as source:
-                print("Listening...")
+    while isInputting:
+        if inputType == "t" or inputType == "T":
+            coffee = input("Enter a Coffee: ")
+        elif inputType == "v" or inputType == "V":
+            coffee = sf.getCoffee()
+        else:
+            print("again")
 
-                r.adjust_for_ambient_noise(source, duration=0.2)
-                audio = r.listen(source)
-                text = r.recognize_google(audio)
-                # text = text.lower()
-                # print("You said:", text)
-
-                f = open('output.txt', 'a')
-                f.write(text)
-                f.write("\n")
-                f.close()
-
-                toWords = text.split()
-                newText = ""
-
-                for word in toWords:
-                    capitalized = word.capitalize()
-                    newText += f"{capitalized} "
-
-                print("You said: " + newText)
-
-                if newText:
-                    return newText.strip()
-                elif "exit" in text:
-                    print("Exiting program...")
-                    isGettingCoffee = False
-
-        except sr.RequestError as e:
-            print("Could not request results; {0}".format(e))
-
-        except sr.UnknownValueError:
-            print("Could not understand audio")
-
-        except KeyboardInterrupt:
-            print("Program terminated by user")
-            isGettingCoffee = False
+        # print("After inputting: " + coffee)
+        response = get_coffee(coffee)
+        data = handle_response(response)
+        
+        if data:
+            isInputting = False
+        elif coffee == "Exit":
+            print("exiting...")
+            isInputting = False
+            run = False
+        else:
+            print(f"{coffee} is not a valid product! Try again.")
+    
+    return data

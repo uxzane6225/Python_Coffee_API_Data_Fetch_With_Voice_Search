@@ -23,29 +23,7 @@ def main():
                 else:
                     run = False
 
-            inputType = input("Type or voice? (t/v): ")
-            coffee = ""
-            isInputting = True
-
-            while isInputting:
-                if inputType == "t" or inputType == "T":
-                    coffee = input("Enter a Coffee: ")
-                elif inputType == "v" or inputType == "V":
-                    coffee = funky.getCoffee()
-                else:
-                    print("again")
-
-                # print("After inputting: " + coffee)
-                response = funky.get_coffee(coffee)
-                data = funky.handle_response(response)
-                if data:
-                    isInputting = False
-                elif coffee == "Exit":
-                    print("exiting...")
-                    isInputting = False
-                    run = False
-                else:
-                    print(f"{coffee} is not a valid product! Try again.")
+            data = funky.get_input()
 
             # print(data)
             if data:
