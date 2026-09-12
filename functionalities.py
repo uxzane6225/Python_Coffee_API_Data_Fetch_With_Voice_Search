@@ -9,10 +9,15 @@ base_url = os.getenv('BASE_URL')
 
 
 def get_coffee(name):
-    url = f"{base_url}?title={name}"
-    response = requests.get(url)
-    # print(response)
-    return response
+    try:
+        url = f"{base_url}?title={name}"
+        response = requests.get(url)
+        # print(response)
+        return response
+    except ConnectionError:
+        print("Connection Error")
+    except Exception as e:
+        print(e)
 
 def handle_response(response):
     if response.status_code == 200:
@@ -50,5 +55,5 @@ def get_input():
             run = False
         else:
             print(f"{coffee} is not a valid product! Try again.")
-    
+
     return data

@@ -1,10 +1,16 @@
 import speech_recognition as sr
 r = sr.Recognizer()
+
 def store_text(input):
-    f = open('output.txt', 'a')
-    f.write(input)
-    f.write("\n")
-    f.close()
+    try:
+        f = open('output.txt', 'a')
+        f.write(input)
+        f.write("\n")
+    except Exception as e:
+        print(e)
+    finally:
+        f.close()
+
 
 def capitalizing(input):
     toWords = input.split()
@@ -43,10 +49,8 @@ def getCoffee():
 
         except sr.RequestError as e:
             print("Could not request results; {0}".format(e))
-
         except sr.UnknownValueError:
             print("Could not understand audio")
-
         except KeyboardInterrupt:
             print("Program terminated by user")
             isGettingCoffee = False
