@@ -8,7 +8,6 @@ db_user = os.getenv("DB_USER")
 db_pass = os.getenv("DB_PASS")
 db_db = os.getenv("DB_DB")
 
-
 try:
     cnx = mysql.connector.connect(user=db_user, password=db_pass, host=db_host, database=db_db)
 except mysql.connector.Error as err:

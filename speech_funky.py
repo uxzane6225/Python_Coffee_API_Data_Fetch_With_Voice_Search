@@ -1,5 +1,4 @@
 import speech_recognition as sr
-r = sr.Recognizer()
 
 def store_text(input):
     try:
@@ -23,6 +22,7 @@ def capitalizing(input):
     return newInput
 
 def getCoffee():
+    r = sr.Recognizer()
     isGettingCoffee = True
     while isGettingCoffee:
         try:
@@ -49,8 +49,10 @@ def getCoffee():
 
         except sr.RequestError as e:
             print("Could not request results; {0}".format(e))
+            isGettingCoffee = False
         except sr.UnknownValueError:
             print("Could not understand audio")
+            isGettingCoffee = False
         except KeyboardInterrupt:
             print("Program terminated by user")
             isGettingCoffee = False
